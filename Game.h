@@ -11,8 +11,13 @@
 class Game
 {
 public:
-  Game() {}
-  ~Game() {}
+  static Game* Instance()
+  {
+    if(s_pInstance == 0)
+      s_pInstance = new Game();
+    
+    return s_pInstance;
+  }
   bool Init(const char* title, int xPos, int yPos, int width, int height, int flags);
   bool Running() const { return m_bRunning; }
   void HandleEvents();
@@ -21,6 +26,9 @@ public:
   void Clean();
   
 private:
+  Game() {}
+  ~Game() {}
+  static Game* s_pInstance;
   SDL_Window* m_pWindow;
   SDL_Renderer* m_pRenderer;
   bool m_bRunning;
@@ -28,5 +36,7 @@ private:
   int m_dircX;
   std::vector<GameObject*> m_gameObjs;
 };
+
+typedef Game TheGame;
 
 #endif
