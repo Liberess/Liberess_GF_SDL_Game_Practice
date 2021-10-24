@@ -6,16 +6,43 @@ bool Game::Init(const char* title, int xPos, int yPos, int width, int height, in
     return false;
 
   m_pWindow = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
-
   if (m_pWindow == 0)
     return false;
 
   m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
-
   if(m_pRenderer == 0)
     return false;
 
-  SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
+  SDL_Surface* pTempSurface2 = IMG_Load("Assets/background.png");
+  if(pTempSurface2 != 0) //실습1
+  {
+    m_background.texture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface2);
+    SDL_FreeSurface(pTempSurface2);
+
+    m_background.desRect.w = m_background.srcRect.w = 640;
+    m_background.desRect.h = m_background.srcRect.h = 480;
+    m_background.desRect.x = m_background.srcRect.x = 0;
+    m_background.desRect.y = m_background.srcRect.y = 0;
+  }
+  else
+  {
+    return false;
+  }
+  
+  SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/rider.bmp");
+  if(pTempSurface == 0) //실습1
+    return false;
+
+  m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
+  SDL_FreeSurface(pTempSurface);
+  
+  SDL_QueryTexture(m_pTexture, NULL, NULL, &m_srcRect.w, &m_srcRect.h);
+
+  m_desRect.w = m_srcRect.w;
+  m_desRect.h = m_srcRect.h;
+  m_desRect.x = m_srcRect.x = 0;
+  m_desRect.y = m_srcRect.y = 0;
+  m_dircX = 1;
 
   m_bRunning = true;
   return true;
@@ -39,22 +66,19 @@ void Game::HandleEvents()
 
 void Game::Update()
 {
-  static int count = 0;
+  if(m_desRect.x + m_desRect.w >= 640 || m_desRect.x < 0)
+    m_dircX *= -1;
 
-  if(count >= 5)
-  {
-    m_bRunning = false;
-    return;
-  }
+  m_desRect.x += 1 * m_dircX;
 
-  SDL_SetRenderDrawColor(m_pRenderer, rand() % 256, rand() % 256, rand() % 256, 255);
-  SDL_Delay(1000);
-  ++count;
+  SDL_Delay(10);
 }
 
 void Game::Render()
 {
   SDL_RenderClear(m_pRenderer);
+  SDL_RenderCopy(m_pRenderer, m_background.texture, &m_background.srcRect, &m_background.desRect);
+  SDL_RenderCopy(m_pRenderer, m_pTexture, &m_srcRect, &m_desRect);
   SDL_RenderPresent(m_pRenderer);
 }
 
