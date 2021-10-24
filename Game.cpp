@@ -38,10 +38,34 @@ bool Game::Init(const char* title, int xPos, int yPos, int width, int height, in
   
   SDL_QueryTexture(m_pTexture, NULL, NULL, &m_srcRect.w, &m_srcRect.h);
 
-  m_desRect.w = m_srcRect.w;
-  m_desRect.h = m_srcRect.h;
+  //실습1
+  m_desRect.w = m_srcRect.w = 50;
+  m_desRect.h = m_srcRect.h = 50;
   m_desRect.x = m_srcRect.x = 0;
   m_desRect.y = m_srcRect.y = 0;
+  
+  //실습2
+  m_desRect.w = m_srcRect.w = 50;
+  m_desRect.h = m_srcRect.h = 50;
+  m_srcRect.x = 0;
+  m_srcRect.y = 0;
+  m_desRect.x = 100;
+  m_desRect.y = 100;
+
+  //실습3
+  m_desRect.w = m_srcRect.w = 50;
+  m_desRect.h = m_srcRect.h = 50;
+  m_srcRect.x = 50;
+  m_srcRect.y = 50;
+  m_desRect.x = 100;
+  m_desRect.y = 100;
+
+  //실습4
+  m_desRect.w = m_srcRect.w = 640;
+  m_desRect.h = m_srcRect.h = 480;
+  m_desRect.x = m_srcRect.x = 0;
+  m_desRect.y = m_srcRect.y = 0;
+
   m_dircX = 1;
 
   m_bRunning = true;
@@ -69,7 +93,7 @@ void Game::Update()
   if(m_desRect.x + m_desRect.w >= 640 || m_desRect.x < 0)
     m_dircX *= -1;
 
-  m_desRect.x += 1 * m_dircX;
+  //m_desRect.x += 1 * m_dircX;
 
   SDL_Delay(10);
 }
