@@ -2,6 +2,8 @@
 #define __Game_H__
 
 #include "SDL.h"
+#include "Player.h"
+#include "GameObject.h"
 #include "TextureManager.h"
 #include <iostream>
 
@@ -23,6 +25,8 @@ private:
   bool m_bRunning;
   int m_currentFrame;
   int m_dircX;
+  GameObject m_go;
+  Player m_player;
 };
 
 #endif
