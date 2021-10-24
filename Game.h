@@ -2,7 +2,6 @@
 #define __Game_H__
 
 #include "SDL.h"
-#include "Player.h"
 #include "GameObject.h"
 #include "TextureManager.h"
 #include <vector>
@@ -24,6 +23,7 @@ public:
   void Update();
   void Render();
   void Clean();
+  SDL_Renderer* GetRenderer() const { return m_pRenderer; }
   
 private:
   Game() {}

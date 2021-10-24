@@ -1,12 +1,12 @@
-#ifndef __Player_H__
-#define __Player_H__
+#ifndef __Enemy_H__
+#define __Enemy_H__
 
 #include "SDLGameObject.h"
 
-class Player : public SDLGameObject
+class Enemy : public SDLGameObject
 {
 public:
-  Player(const LoaderParams* pParams)
+  Enemy(const LoaderParams* pParams)
     : SDLGameObject(pParams) {}
   virtual void Draw();
   virtual void Update();
