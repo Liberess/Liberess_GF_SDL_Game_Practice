@@ -12,27 +12,12 @@ bool Game::Init(const char* title, int xPos, int yPos, int width, int height, in
   m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
   if(m_pRenderer == 0)
     return false;
-
-  SDL_Surface* pTempSurface2 = IMG_Load("Assets/background.png");
-  if(pTempSurface2 != 0) //실습1
-  {
-    m_background.texture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface2);
-    SDL_FreeSurface(pTempSurface2);
-
-    m_background.desRect.w = m_background.srcRect.w = 640;
-    m_background.desRect.h = m_background.srcRect.h = 480;
-    m_background.desRect.x = m_background.srcRect.x = 0;
-    m_background.desRect.y = m_background.srcRect.y = 0;
-  }
-  else
-  {
-    return false;
-  }
   
-  SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate.bmp");
+  SDL_Surface* pTempSurface = IMG_Load("Assets/animate-alpha.png");
   if(pTempSurface == 0) //실습1
     return false;
 
+  SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 255);
   m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
   SDL_FreeSurface(pTempSurface);
 
