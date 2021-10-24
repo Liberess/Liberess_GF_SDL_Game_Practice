@@ -2,15 +2,8 @@
 #define __Game_H__
 
 #include "SDL.h"
-#include "SDL_image.h"
+#include "TextureManager.h"
 #include <iostream>
-
-typedef struct
-{
-  SDL_Texture* texture;
-  SDL_Rect srcRect;
-  SDL_Rect desRect;
-} Sprite;
 
 class Game
 {
@@ -28,10 +21,8 @@ private:
   SDL_Window* m_pWindow;
   SDL_Renderer* m_pRenderer;
   bool m_bRunning;
-  SDL_Texture* m_pTexture;
-  SDL_Rect m_srcRect;
-  SDL_Rect m_desRect;
-  Sprite m_background;
+  TextureManager m_textureManager;
+  int m_currentFrame;
   int m_dircX;
 };
 
