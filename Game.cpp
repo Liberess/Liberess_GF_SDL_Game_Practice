@@ -29,40 +29,16 @@ bool Game::Init(const char* title, int xPos, int yPos, int width, int height, in
     return false;
   }
   
-  SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/rider.bmp");
+  SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate.bmp");
   if(pTempSurface == 0) //실습1
     return false;
 
   m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
   SDL_FreeSurface(pTempSurface);
-  
-  SDL_QueryTexture(m_pTexture, NULL, NULL, &m_srcRect.w, &m_srcRect.h);
 
   //실습1
-  m_desRect.w = m_srcRect.w = 50;
-  m_desRect.h = m_srcRect.h = 50;
-  m_desRect.x = m_srcRect.x = 0;
-  m_desRect.y = m_srcRect.y = 0;
-  
-  //실습2
-  m_desRect.w = m_srcRect.w = 50;
-  m_desRect.h = m_srcRect.h = 50;
-  m_srcRect.x = 0;
-  m_srcRect.y = 0;
-  m_desRect.x = 100;
-  m_desRect.y = 100;
-
-  //실습3
-  m_desRect.w = m_srcRect.w = 50;
-  m_desRect.h = m_srcRect.h = 50;
-  m_srcRect.x = 50;
-  m_srcRect.y = 50;
-  m_desRect.x = 100;
-  m_desRect.y = 100;
-
-  //실습4
-  m_desRect.w = m_srcRect.w = 640;
-  m_desRect.h = m_srcRect.h = 480;
+  m_desRect.w = m_srcRect.w = 128;
+  m_desRect.h = m_srcRect.h = 82;
   m_desRect.x = m_srcRect.x = 0;
   m_desRect.y = m_srcRect.y = 0;
 
@@ -94,6 +70,8 @@ void Game::Update()
     m_dircX *= -1;
 
   //m_desRect.x += 1 * m_dircX;
+
+  m_srcRect.x = 128 * ((SDL_GetTicks() / 100) % 6);
 
   SDL_Delay(10);
 }
