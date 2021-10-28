@@ -23,7 +23,6 @@ private:
   SDL_Renderer* m_pRenderer;
   bool m_bRunning;
   int m_screenWidth, m_screenHeight;
-  TextureManager m_textureManager;
   int m_currentFrame;
 };
 

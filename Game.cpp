@@ -17,7 +17,7 @@ bool Game::Init(const char* title, int x, int y, int h, int w, int flags)
       {
         SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 255);
 
-        if(!m_textureManager.Load("Assets/jiu-alpha.png", "animate", m_pRenderer)) //실습1
+        if(!TheTextureManager::Instance()->Load("Assets/jiu-alpha.png", "animate", m_pRenderer)) 
           return false;
       }
       else
@@ -60,8 +60,8 @@ void Game::Update()
 void Game::Render()
 {
   SDL_RenderClear(m_pRenderer);
-  m_textureManager.Draw("animate", 0, 0, 52, 48, m_pRenderer);
-  m_textureManager.DrawFrame("animate", 100, 100, 52, 49, 3, m_currentFrame, m_pRenderer);
+  TheTextureManager::Instance()->Draw("animate", 0, 0, 52, 48, m_pRenderer);
+  TheTextureManager::Instance()->DrawFrame("animate", 100, 100, 52, 49, 3, m_currentFrame, m_pRenderer);
   SDL_RenderPresent(m_pRenderer);
 }
 
