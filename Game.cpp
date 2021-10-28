@@ -15,9 +15,9 @@ bool Game::Init(const char* title, int x, int y, int h, int w, int flags)
 
       if(m_pRenderer != 0)
       {
-        SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 0);
+        SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 255);
 
-        SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/animate.bmp");
+        SDL_Surface* pTempSurface = IMG_Load("Assets/animate-alpha.png");
 
         if(pTempSurface != 0)
         {
