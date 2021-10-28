@@ -6,6 +6,7 @@
 #include "Player.h" //실습
 #include "GameObject.h"
 #include "TextureManager.h"
+#include <vector>
 #include <iostream>
 
 class Game
@@ -25,8 +26,7 @@ private:
   SDL_Renderer* m_pRenderer;
   bool m_bRunning;
   int m_screenWidth, m_screenHeight;
-  GameObject m_go;
-  Player m_player;
+  std::vector<GameObject*> m_gameObjs;
 };
 
 #endif

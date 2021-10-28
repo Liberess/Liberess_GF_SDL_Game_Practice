@@ -8,10 +8,10 @@
 class GameObject
 {
 public:
-  void Load(int x, int y, int w, int h, std::string textureID);
-  void Draw(SDL_Renderer* pRenderer);
-  void Update();
-  void Clean();
+  virtual void Load(int x, int y, int w, int h, std::string textureID);
+  virtual void Draw(SDL_Renderer* pRenderer);
+  virtual void Update();
+  virtual void Clean();
 
 protected:
   int m_x, m_y;

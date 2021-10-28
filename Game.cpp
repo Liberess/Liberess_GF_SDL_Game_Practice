@@ -19,8 +19,14 @@ bool Game::Init(const char* title, int x, int y, int h, int w, int flags)
 
         if(TheTextureManager::Instance()->Load("Assets/animate-alpha.png", "animate", m_pRenderer)) 
         {
-          m_go.Load(100, 100, 128, 82, "animate");
-          m_player.Load(300, 300, 128, 82, "animate");
+          GameObject* m_go = new GameObject();
+          GameObject* m_player = new Player();
+
+          m_go->Load(100, 100, 128, 82, "animate"); //실습
+          m_player->Load(300, 300, 128, 82, "animate");
+
+          m_gameObjs.push_back(m_go);
+          m_gameObjs.push_back(m_player);
         }
         else
         {
@@ -61,16 +67,16 @@ void Game::HandleEvents()
 
 void Game::Update()
 {
-  m_go.Update();
-  m_player.Update();
+  for(int i = 0; i < m_gameObjs.size(); i++)
+    m_gameObjs[i]->Update();
 }
 
 void Game::Render()
 {
   SDL_RenderClear(m_pRenderer);
 
-  m_go.Draw(m_pRenderer);
-  m_player.Draw(m_pRenderer);
+  for(int i = 0; i < m_gameObjs.size(); i++)
+    m_gameObjs[i]->Draw(m_pRenderer);
 
   SDL_RenderPresent(m_pRenderer);
 }
