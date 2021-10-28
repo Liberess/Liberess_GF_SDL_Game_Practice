@@ -19,18 +19,48 @@ bool Game::Init(const char* title, int x, int y, int h, int w, int flags)
 
         SDL_Surface* pTempSurface = SDL_LoadBMP("Assets/rider.bmp");
 
-        if(pTempSurface != 0) //실습1
+        if(pTempSurface != 0)
         {
           m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
           SDL_FreeSurface(pTempSurface);
           SDL_QueryTexture(m_pTexture, NULL, NULL, &m_srcRect.w, &m_srcRect.h);
 
+          //기존
           m_desRect.x = m_srcRect.x = 0;
           m_desRect.y = m_srcRect.y = 0;
-
           m_desRect.w = m_srcRect.w;
           m_desRect.h = m_srcRect.h;
-          m_dirX = 1;
+
+          std::cout << "rider width : " << m_srcRect.w << std::endl; //실습1
+          std::cout << "rider height : " << m_srcRect.h << std::endl;
+
+          //응용1
+          m_desRect.x = m_srcRect.x = 0;
+          m_desRect.y = m_srcRect.y = 0;
+          m_desRect.w = m_srcRect.w = 50;
+          m_desRect.h = m_srcRect.h = 50;
+
+          //응용2
+          m_srcRect.x = 0;
+          m_srcRect.y = 0;
+          m_desRect.x = 100;
+          m_desRect.y = 100;
+          m_desRect.w = m_srcRect.w = 50;
+          m_desRect.h = m_srcRect.h = 50;
+
+          //응용3
+          m_srcRect.x = 50;
+          m_srcRect.y = 50;
+          m_desRect.x = 100;
+          m_desRect.y = 100;
+          m_desRect.w = m_srcRect.w = 50;
+          m_desRect.h = m_srcRect.h = 50;
+
+          //응용4
+          m_desRect.x = m_srcRect.x = 0;
+          m_desRect.y = m_srcRect.y = 0;
+          m_desRect.w = m_srcRect.w = m_screenWidth;
+          m_desRect.h = m_srcRect.h = m_screenHeight;
         }
         else
         {
@@ -38,7 +68,7 @@ bool Game::Init(const char* title, int x, int y, int h, int w, int flags)
         }
 
         pTempSurface = IMG_Load("Assets/background.png");
-        if(pTempSurface != 0) //실습1
+        if(pTempSurface != 0)
         {
           backSprite.texture = SDL_CreateTextureFromSurface(m_pRenderer, pTempSurface);
           SDL_FreeSurface(pTempSurface);
@@ -88,17 +118,14 @@ void Game::HandleEvents()
 
 void Game::Update()
 {
-  if(m_desRect.x + m_desRect.w >= m_screenWidth || m_desRect.x < 0)
-    m_dirX *= -1;
 
-  m_desRect.x += 1 * m_dirX; //실습1
 }
 
 void Game::Render()
 {
   SDL_RenderClear(m_pRenderer);
   SDL_RenderCopy(m_pRenderer, backSprite.texture, &backSprite.srcRect, &backSprite.desRect);
-  SDL_RenderCopy(m_pRenderer, m_pTexture, &m_srcRect, &m_desRect); //실습2
+  SDL_RenderCopy(m_pRenderer, m_pTexture, &m_srcRect, &m_desRect);
   SDL_RenderPresent(m_pRenderer);
 }
 
