@@ -17,8 +17,15 @@ bool Game::Init(const char* title, int x, int y, int h, int w, int flags)
       {
         SDL_SetRenderDrawColor(m_pRenderer, 255, 0, 0, 255);
 
-        if(!TheTextureManager::Instance()->Load("Assets/jiu-alpha.png", "animate", m_pRenderer)) 
+        if(TheTextureManager::Instance()->Load("Assets/animate-alpha.png", "animate", m_pRenderer)) 
+        {
+          m_go.Load(100, 100, 128, 82, "animate");
+          m_player.Load(300, 300, 128, 82, "animate");
+        }
+        else
+        {
           return false;
+        }
       }
       else
       {
@@ -54,14 +61,17 @@ void Game::HandleEvents()
 
 void Game::Update()
 {
-  m_currentFrame = (SDL_GetTicks() / 100) % 5;
+  m_go.Update();
+  m_player.Update();
 }
 
 void Game::Render()
 {
   SDL_RenderClear(m_pRenderer);
-  TheTextureManager::Instance()->Draw("animate", 0, 0, 52, 48, m_pRenderer);
-  TheTextureManager::Instance()->DrawFrame("animate", 100, 100, 52, 49, 3, m_currentFrame, m_pRenderer);
+
+  m_go.Draw(m_pRenderer);
+  m_player.Draw(m_pRenderer);
+
   SDL_RenderPresent(m_pRenderer);
 }
 
