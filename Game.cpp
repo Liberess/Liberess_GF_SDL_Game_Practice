@@ -1,4 +1,6 @@
 #include "Game.h"
+#include "Enemy.h"
+#include "Player.h"
 
 Game* Game::s_pInstance = 0;
 
@@ -21,14 +23,8 @@ bool Game::Init(const char* title, int x, int y, int h, int w, int flags)
 
         if(TheTextureManager::Instance()->Load("Assets/animate-alpha.png", "animate", m_pRenderer)) 
         {
-          GameObject* m_go = new GameObject();
-          GameObject* m_player = new Player();
-
-          m_go->Load(100, 100, 128, 82, "animate"); //실습
-          m_player->Load(300, 300, 128, 82, "animate");
-
-          m_gameObjs.push_back(m_go);
-          m_gameObjs.push_back(m_player);
+          m_gameObjs.push_back(new Player(new LoaderParams(100, 100, 128, 82, "animate")));
+          m_gameObjs.push_back(new Enemy(new LoaderParams(100, 100, 128, 82, "animate")));
         }
         else
         {
@@ -78,7 +74,7 @@ void Game::Render()
   SDL_RenderClear(m_pRenderer);
 
   for(int i = 0; i < m_gameObjs.size(); i++)
-    m_gameObjs[i]->Draw(m_pRenderer);
+    m_gameObjs[i]->Draw();
 
   SDL_RenderPresent(m_pRenderer);
 }

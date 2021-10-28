@@ -3,7 +3,6 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
-#include "Player.h" //실습
 #include "GameObject.h"
 #include "TextureManager.h"
 #include <vector>
