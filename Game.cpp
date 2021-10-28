@@ -1,5 +1,7 @@
 #include "Game.h"
 
+Game* Game::s_pInstance = 0;
+
 bool Game::Init(const char* title, int x, int y, int h, int w, int flags)
 {
   if (SDL_Init(SDL_INIT_EVERYTHING) == 0)

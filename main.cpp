@@ -1,21 +1,24 @@
 #include "Game.h"
 
-Game* g_game = 0;
-
 int main(int argc, char* args[])
 {
-  g_game = new Game();
-  g_game->Init("Game Class", 0, 0, 512, 512, 0);
-
-  while(g_game->Running())
+  if(TheGame::Instance()->Init("Chapter 1", 100, 100, 640, 480, false))
   {
-    g_game->HandleEvents();
-    g_game->Update();
-    g_game->Render();
-    SDL_Delay(10);
+    while(TheGame::Instance()->Running())
+    {
+      TheGame::Instance()->HandleEvents();
+      TheGame::Instance()->Update();
+      TheGame::Instance()->Render();
+      SDL_Delay(10);
+    }
   }
-
-  g_game->Clean();
+  else
+  {
+    std::cout << "Game Init Failure " << SDL_GetError() << "\n";
+    return -1;
+  }
+  
+  TheGame::Instance()->Clean();
 
   return 0;
 }
