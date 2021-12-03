@@ -1,35 +1,33 @@
-#include <SDL.h>
+#include "Game.h"
 
-SDL_Window* g_pWindow = 0;
-SDL_Renderer* g_pRenderer = 0;
-
-int main(int argc, char* args[])
+int main(int argc, char* argv[])
 {
- 
-   if (SDL_Init(SDL_INIT_EVERYTHING) >= 0)
-   {
+	const int FPS = 60;
+	const int DELAY_TIME = 1000.0f / FPS;
 
-        g_pWindow = SDL_CreateWindow("Setting up SDL 10/22",
-            SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED,
-            640, 480, SDL_WINDOW_SHOWN);
+	Uint32 frameStart, frameTime;
 
-        if (g_pWindow != 0)
-        {
-            g_pRenderer = SDL_CreateRenderer(g_pWindow, -1, 0);
-        }
+	if (TheGame::Instance()->init("Avoiding poop",
+		100, 100, 720, 480, false))
+	{
+		while (TheGame::Instance()->running())
+		{
+			frameStart = SDL_GetTicks();
+			TheGame::Instance()->handleEvents();
+			TheGame::Instance()->update();
+			TheGame::Instance()->render();
+			frameTime = SDL_GetTicks() - frameStart;
+			if (frameTime < DELAY_TIME)
+				SDL_Delay((int)(DELAY_TIME - frameTime));
+		}
+	}
+	else
+	{
+		std::cout << SDL_GetError() << std::endl;
+		return -1;
+	}
 
-    }
-    else {
-        return 1;
-    }
+	TheGame::Instance()->clean();
 
-    SDL_SetRenderDrawColor(g_pRenderer, 255, 0, 0, 255);
-    SDL_RenderClear(g_pRenderer);
-    SDL_RenderPresent(g_pRenderer);
-
-    SDL_Delay(5000);
-    SDL_Quit();
-
-    return 0;
+	return 0;
 }
