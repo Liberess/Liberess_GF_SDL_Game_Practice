@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Game.h"
 #include "TextureManager.h"
-#include "PlayState.h"
+#include "AudioManager.h"
 
 Player::Player(const LoaderParams* pParams) :
 	SDLGameObject(pParams)
@@ -33,37 +33,63 @@ void Player::clean()
 
 void Player::handleInput()
 {
+	static bool isWalking = false;
+	static int count = 0;
+
 	if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT))
 	{
+		isWalking = true;
+
 		if (m_position.getX() + m_width < TheGame::Instance()->getScreenWidth())
 		{
-			m_velocity.setX(5);
+			m_velocity.setX(4);
 			m_flipX = SDL_FLIP_NONE;
 		}
 		else
 		{
 			m_velocity.setX(0);
 		}
-
-		m_currentRow = 2; //Run
 	}
 	else if (TheInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
 	{
+		isWalking = true;
+
 		if (m_position.getX() > 0)
 		{
-			m_velocity.setX(-5);
+			m_velocity.setX(-4);
 			m_flipX = SDL_FLIP_HORIZONTAL;
 		}
 		else
 		{
 			m_velocity.setX(0);
 		}
-
-		m_currentRow = 2; //Run
 	}
 	else
 	{
-		m_currentRow = 1; //Idle
+		isWalking = false;
+
 		m_velocity.setX(0);
+	}
+
+	if (isWalking)
+	{
+		m_currentRow = 2; //Run
+
+		if(count == 0)
+#ifdef WIN32
+			TheAudioManager::Instance()->PlaySFX(SfxType::Move);
+#endif // WIN32
+
+
+
+		++count;
+	}
+	else
+	{
+		count = 0;
+		m_currentRow = 1; //Idle
+#ifdef WIN32
+		TheAudioManager::Instance()->StopSFX(SfxType::Move);
+#endif // WIN32
 	}
 }

@@ -1,7 +1,10 @@
 #include "Enemy.h"
 #include "Game.h"
+#include "AudioManager.h"
+#include <cmath>
 
-Enemy::Enemy(const LoaderParams* pParams) : SDLGameObject(pParams)
+Enemy::Enemy(const LoaderParams* pParams)
+	: SDLGameObject(pParams), m_sfxCount(0)
 {
 	init();
 }
@@ -19,10 +22,19 @@ void Enemy::init()
 	std::uniform_real_distribution<float> dis1(0.0f, 100.0f); // 내려갈까, 말까?
 	std::uniform_real_distribution<float> dis2(2.0f, 10.0f); // 판단 기다릴게
 
+	m_sfxCount = 0; // 똥 효과음
+
 	m_time = 0.0f;
 
 	m_fallProbability = dis1(gen);
 	m_waitTime = dis2(gen);
+
+	if (floor(TheGame::Instance()->m_time / 10.0f) > 10)
+		m_fallSpeed = 10;
+	else if(floor(TheGame::Instance()->m_time / 10.0f) <= 0)
+		m_fallSpeed = 1;
+	else
+		m_fallSpeed = floor(TheGame::Instance()->m_time / 10.0f);
 }
 
 void Enemy::draw()
@@ -35,11 +47,22 @@ void Enemy::update()
 	if (checkEndGround()) // 땅 끝이라면, 다시 떨어지도록 초기화
 		init();
 
+	if (m_isFalling && m_sfxCount == 0)
+	{
+		++m_sfxCount;
+
+#ifdef WIN32
+		TheAudioManager::Instance()->PlaySFX(SfxType::Poop);
+#endif
+	}
+
+	// 내려갈 시간이 됐다면, 가즈아
 	if (m_time >= m_waitTime && !m_isFalling)
 	{
 		init();
 
-		if(m_fallProbability < 30.0f)
+		// 이게 맞나 싶으면 내려가
+		if(m_fallProbability < (TheGame::Instance()->m_time + 10.0f) * 1.2f)
 			m_isFalling = true;
 	}
 	else
@@ -48,7 +71,7 @@ void Enemy::update()
 	}
 
 	if (m_isFalling) // 아래로
-		m_velocity.setY(2);
+		m_velocity.setY(m_fallSpeed);
 
 	SDLGameObject::update();
 }

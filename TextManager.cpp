@@ -6,11 +6,12 @@ TextManager* TextManager::s_pInstance = 0;
 void TextManager::drawText(const char* str, int x, int y, int size, SDL_Color color, SDL_Renderer* pRenderer)
 {
 	clean();
+
 	TTF_Init();
 
-	TTF_Font* m_font = TTF_OpenFont("Assets/CookieRun Regular.ttf", size);
+	TTF_Font* font = TTF_OpenFont("Assets/CookieRun Regular.ttf", size);
 
-	m_surface = TTF_RenderText_Solid(m_font, str, color);
+	m_surface = TTF_RenderText_Solid(font, str, color);
 	m_texture = SDL_CreateTextureFromSurface(pRenderer, m_surface);
 
 	int w = 0, h = 0;

@@ -1,5 +1,5 @@
-#pragma once
 #include "MenuButton.h"
+#include "AudioManager.h"
 
 MenuButton::MenuButton(const LoaderParams* pParams, void(*callback)())
 	: SDLGameObject(pParams), m_callback(callback)
@@ -36,6 +36,12 @@ void MenuButton::update()
 			m_currentFrame = CLICKED;
 			m_callback();
 			m_bReleased = false;
+
+#ifdef WIN32
+			TheAudioManager::Instance()->PlaySFX(SfxType::BtnClick);
+#endif // WIN32
+
+			SDL_Delay(200);
 		}
 		else if (!TheInputHandler::Instance()->getMouseButtonState(LEFT))
 		{

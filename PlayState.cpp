@@ -6,6 +6,7 @@
 #include "GameStateMachine.h"
 #include "GameOverState.h"
 #include "TextManager.h"
+#include "AudioManager.h"
 #include <iostream>
 #include <cmath>
 #include <cstring>
@@ -15,17 +16,21 @@ PlayState *PlayState::s_pInstance  = nullptr;
 
 void PlayState::update()
 {
-	for (int i = 0; i < m_gameObjects.size(); i++) // ¿ÀºêÁ§Æ® ¾÷µ¥ÀÌÆ®
+	for (int i = 0; i < m_gameObjects.size(); i++) // ï¿½Æ® ï¿½Æ®
 		m_gameObjects[i]->update();
 
-	for (int i = 2; i < m_gameObjects.size(); i++) // ¹°¸® Ãæµ¹ Ã¼Å©
+	for (int i = 2; i < m_gameObjects.size(); i++) // ï¿½ ï¿½æµ¹ Ã¼Å©
 	{
 		if (checkCollision(
-			dynamic_cast<SDLGameObject*>(m_gameObjects[1]),	// ÇÃ·¹ÀÌ¾î
-			dynamic_cast<SDLGameObject*>(m_gameObjects[i])))	// ¶Ë1
+			dynamic_cast<SDLGameObject*>(m_gameObjects[1]),	// ï¿½Ã·ï¿½Ì¾ï¿½
+			dynamic_cast<SDLGameObject*>(m_gameObjects[i])))	// ï¿½1
 		{
 			TheGame::Instance()->getStateMachine()
 				->changeState(GameOverState::Instance());
+
+#ifdef WIN32
+			TheAudioManager::Instance()->PlaySFX(SfxType::GameOver);
+#endif
 		}
 	}
 
@@ -44,6 +49,7 @@ void PlayState::render()
 	for (int i = 0; i < m_gameObjects.size(); ++i)
 		m_gameObjects[i]->draw();
 
+#ifdef WIN32
 	// Time Unit Change
 	int second = (int)floor(TheGame::Instance()->m_time);
 	int minute = second / 60;
@@ -61,7 +67,8 @@ void PlayState::render()
 	// Draw Time Text UI
 	SDL_Color color = { 255, 255, 255 };
 	TheTextManager::Instance()->drawText(
-		ch, 5, 5, 15, color, TheGame::Instance()->getRenderer());
+		ch, 10, 10, 15, color, TheGame::Instance()->getRenderer());
+#endif
 }
 
 bool PlayState::onEnter()
@@ -96,7 +103,6 @@ bool PlayState::onEnter()
 	m_gameObjects.push_back(player);
 
 	int xPos = -10;
-
 	for (int i = 2; i < 38; i++)
 	{
 		m_gameObjects.push_back(new Enemy(
@@ -104,17 +110,9 @@ bool PlayState::onEnter()
 		xPos += 20;
 	}
 
-	//GameObject* poop1 = new Enemy(
-	//	new LoaderParams(500, 300, 32, 32, "poop"));
-	//m_gameObjects.push_back(poop1);
-
-	//GameObject* poop2 = new Enemy(
-	//	new LoaderParams(600, 300, 32, 32, "poop"));
-	//m_gameObjects.push_back(poop2);
-
-	//GameObject* poop3 = new Enemy(
-	//	new LoaderParams(200, 300, 32, 32, "poop"));
-	//m_gameObjects.push_back(poop3);
+#ifdef WIN32
+	TheAudioManager::Instance()->PlayBGM();
+#endif // WIN32
 
 	return true;
 }
@@ -130,6 +128,7 @@ bool PlayState::onExit()
 	TheTextureManager::Instance()->clearFromTextureMap("player");
 	TheTextureManager::Instance()->clearFromTextureMap("poop");
 	TheTextureManager::Instance()->clearFromTextureMap("platform");
+
 	return true;
 }
 

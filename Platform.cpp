@@ -2,8 +2,8 @@
 
 Platform::Platform(const LoaderParams* pParams) : SDLGameObject(pParams)
 {
-	m_velocity.setX(0.001);
-	m_velocity.setY(2);
+	m_velocity.setX(0);
+	m_velocity.setY(0);
 }
 
 void Platform::draw()
@@ -13,8 +13,7 @@ void Platform::draw()
 
 void Platform::update()
 {
-	m_velocity.setX(0);
-	m_velocity.setY(0);
+
 }
 
 void Platform::clean()

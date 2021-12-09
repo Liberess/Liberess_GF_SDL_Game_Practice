@@ -4,6 +4,7 @@
 #include "TextureManager.h"
 #include "Game.h"
 #include "GameStateMachine.h"
+#include "AudioManager.h"
 #include <iostream>
 
 const std::string MenuState::s_menuID = "MENU";
@@ -44,6 +45,11 @@ bool MenuState::onEnter()
 
 	m_gameObjects.push_back(button1);
 	m_gameObjects.push_back(button2);
+
+#ifdef WIN32
+	TheAudioManager::Instance()->StopBGM();
+	TheAudioManager::Instance()->StopAllSFX();
+#endif // WIN32
 
 	return true;
 }

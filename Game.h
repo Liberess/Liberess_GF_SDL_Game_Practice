@@ -41,7 +41,8 @@ public:
 private:
 	Game() : m_currentFrame(0), m_pWindow(nullptr), m_pRenderer(nullptr),
 		m_bRunning(false), m_pTexture(nullptr), m_srcRect(), m_destRect(),
-		m_pGameStateMachine(nullptr), m_screenWidth(0), m_screenHeight(0) {}
+		m_pGameStateMachine(nullptr), m_screenWidth(0), m_screenHeight(0),
+		m_score(0), m_time(0) {}
 	static Game* s_pInstance;
 
 private:

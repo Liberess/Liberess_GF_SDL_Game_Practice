@@ -1,3 +1,5 @@
+// https://drive.google.com/file/d/1V2DQNWZ1LWCp-TKxGg-gjEZMqiXOaoXF/view?usp=sharing
+
 #include "Game.h"
 
 int main(int argc, char* argv[])
@@ -7,7 +9,7 @@ int main(int argc, char* argv[])
 
 	Uint32 frameStart, frameTime;
 
-	if (TheGame::Instance()->init("Avoiding poop",
+	if (TheGame::Instance()->init("Avoiding Poop",
 		100, 100, 720, 480, false))
 	{
 		while (TheGame::Instance()->running())

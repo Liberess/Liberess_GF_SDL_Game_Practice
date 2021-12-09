@@ -1,5 +1,6 @@
 #include "GameOverState.h"
 #include "TextManager.h"
+#include "AudioManager.h"
 
 const std::string GameOverState::s_gameOverID = "GAME OVER";
 GameOverState* GameOverState::s_pInstance = nullptr;
@@ -18,6 +19,11 @@ void GameOverState::s_restartPlay()
 
 bool GameOverState::onEnter()
 {
+#ifdef WIN32
+	TheAudioManager::Instance()->StopBGM();
+	TheAudioManager::Instance()->StopAllSFX();
+#endif // WIN32
+
 	if (!TheTextureManager::Instance()->load("Assets/UI/main.png",
 		"mainButton", TheGame::Instance()->getRenderer()))
 	{

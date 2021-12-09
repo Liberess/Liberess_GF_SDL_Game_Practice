@@ -4,6 +4,7 @@
 #include "GameStateMachine.h"
 #include "MenuState.h"
 #include "PlayState.h"
+#include "AudioManager.h"
 
 Game* Game::s_pInstance = nullptr;
 
@@ -27,9 +28,13 @@ bool Game::init(const char* title, int xpos, int ypos, int width,
 		return false;		// sdl could not initialize
 	}
 
-	// °ÔÀÓ À¯ÇÑ»óÅÂ±â°è
+	// ï¿½ ï¿½Ñ»ï¿½Â±ï¿½
 	m_pGameStateMachine = new GameStateMachine();
 	m_pGameStateMachine->changeState(MenuState::Instance());
+
+#ifdef WIN32
+	TheAudioManager::Instance()->init();
+#endif // WIN32
 
 	m_bRunning = true;
 	return true;
@@ -37,7 +42,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width,
 
 void Game::update()
 {
-	// »óÅÂ ´ÜÀ§·Î °ÔÀÓ ·çÇÁ Ã³¸®
+	// ï¿½ ï¿½ ï¿½ ï¿½ Ã³ï¿½
 	m_pGameStateMachine->update();
 }
 
@@ -53,6 +58,10 @@ void Game::clean()
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
 	TheInputHandler::Instance()->clean();
+#ifdef WIN32
+	TheAudioManager::Instance()->clean();
+#endif // WIN32
+
 	SDL_Quit();
 }
 
